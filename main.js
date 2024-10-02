@@ -1,3 +1,4 @@
+// Ref: https://www.nesdev.org/wiki/APU_registers 
 import { NesApuNode } from 'https://cdn.jsdelivr.net/npm/@dtinth/nes-apu-worklet@1.0.1/nes-apu-node.js'
 
 const context = (window.context = new AudioContext())
