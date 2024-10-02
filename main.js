@@ -2,14 +2,32 @@ import { NesApuNode } from 'https://cdn.jsdelivr.net/npm/@dtinth/nes-apu-worklet
 
 const context = (window.context = new AudioContext())
 
+// Ref: https://www.nesdev.org/wiki/Cycle_reference_chart
 const NES_CPU_CLOCK_FREQ = 1_789_773
+const CPU_CYCLE_PER_APU_TIMER_TICK = 16
 
+/**
+ * Convert frequency to timer value.
+ * @name ftot
+ * @type {(frequency: number) => number}
+ * @params {number} frequency - Frequency in Hertz (Hz).
+ */
 const ftot = (frequency) => {
-  return Math.round(NES_CPU_CLOCK_FREQ / (16 * frequency)) - 1
+  return Math.round(NES_CPU_CLOCK_FREQ / (CPU_CYCLE_PER_APU_TIMER_TICK * frequency)) - 1
 }
 
+const STANDARD_NOTE_FREQ = 440; // A4 = 440 Hz (Frequency)
+const STANDARD_NOTE_MIDI = 69; // A4 = 69 (MIDI Note)
+
+/**
+ * Convert MIDI note number to frequency (Hertz or Hz).
+ * @name mtof
+ * @type {(midiNote: number) => number}
+ * @reference https://inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies
+ * @params {number} midiNote - MIDI note number
+ */
 const mtof = (midiNote) => {
-  return 440 * 2 ** ((midiNote - 69) / 12)
+  return STANDARD_NOTE_FREQ * (2 ** ((midiNote - STANDARD_NOTE_MIDI) / 12))
 }
 
 context.audioWorklet
