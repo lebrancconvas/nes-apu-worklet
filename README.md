@@ -26,7 +26,7 @@ let apu = new NesApuNode(context)
 apu.connect(context.destination)
 ```
 
-### Schedule writes to the APU registers
+### Schedule writes to the APU registers (Ref: [NES's APU Register](https://www.nesdev.org/wiki/APU_registers))
 
 ```js
 //                      * Status register
