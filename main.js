@@ -1,9 +1,13 @@
 import { NesApuNode } from 'https://cdn.jsdelivr.net/npm/@dtinth/nes-apu-worklet@1.0.1/nes-apu-node.js'
 
 const context = (window.context = new AudioContext())
+
+const NES_CPU_CLOCK_FREQ = 1_789_773
+
 const ftot = (frequency) => {
-  return Math.round(1789773 / (16 * frequency)) - 1
+  return Math.round(NES_CPU_CLOCK_FREQ / (16 * frequency)) - 1
 }
+
 const mtof = (midiNote) => {
   return 440 * 2 ** ((midiNote - 69) / 12)
 }
@@ -16,6 +20,7 @@ context.audioWorklet
     play.disabled = false
     play.className =
       'border border-#d7fc70 bg-#d7fc70 text-#090807 font-bold py-2 px-4 rounded'
+
     const apu = new NesApuNode(context)
     apu.connect(context.destination)
     apu.port.onmessage = ({ data }) => {
@@ -34,12 +39,14 @@ context.audioWorklet
 
       // Enable channels
       const t = context.currentTime
+
       const setTriangle = (frequency, time) => {
         apu.storeRegisterAtTime(0x4008, 0xff, time)
         const timer = ftot(frequency * 2)
         apu.storeRegisterAtTime(0x400a, timer & 0xff, time)
         apu.storeRegisterAtTime(0x400b, timer >> 8, time)
       }
+
       const setPulse = (index, duty, frequency, volume = 1, time) => {
         const base = 0x4000 + index * 4
         apu.storeRegisterAtTime(
@@ -47,12 +54,14 @@ context.audioWorklet
           0b00110000 | (Math.min(15, volume * 16) & 0xf) | (duty << 6),
           time,
         )
+
         const timer = ftot(frequency * 2)
         if (frequency != null) {
           apu.storeRegisterAtTime(base + 2, timer & 0xff, time)
           apu.storeRegisterAtTime(base + 3, timer >> 8, time)
         }
       }
+
       const silenceTriangle = (time) => {
         apu.storeRegisterAtTime(0x4008, 0x80, time)
       }
