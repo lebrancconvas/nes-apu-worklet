@@ -141,3 +141,7 @@ Temporary Items
 
 # Visual Studio Code
 .vscode/**
+
+# Clojure stuff that I didn't ask for.
+.clj-kondo/**
+.lsp/**
