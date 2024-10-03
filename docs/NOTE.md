@@ -4,7 +4,7 @@
 
 ### Pulse 1 & 2 Channel
 
-- Duty Cycle
+- Duty Cycle (D)
   - The Shape and Character of Pulse Wave
   - Percentage of the period that the pulse is active and inactive.
   - Mode
@@ -17,7 +17,16 @@
       25%   (1/4):   ______--______--______--______--
       50%   (1/2):   ____----____----____----____----
       75%   (3/4):   __------__------__------__------
-
+- Loop Envelope (L)
+  - Control How the volume of sound evolves over time.
+  - Stage:
+    - __Attack__: Reach its maximum volume.
+    - __Decay__: Decrease after the initial peak.
+    - __Sustain__: Steady volume level during the main part of the sound.
+    - __Release__: Fade out after it stops being played.
+  - Bit:
+    - __0__: The envelope plays once and then stops. (Envelope does not loop or Length Counter halt disabled).
+    - __1__: The envelope cycles repeat indefinitely, (Envelope loops or Length Counter halt enabled).
 
 ### Triangle Channel
 
